@@ -1,3 +1,4 @@
+from collections import deque
 import pandas as pd
 datos = pd.read_csv('calles_de_medellin_con_acoso.csv', sep = ';',)
 datos.harassmentRisk = datos.harassmentRisk.fillna(datos.harassmentRisk.mean())
@@ -28,3 +29,35 @@ for i in datos.index:
                          # 'grafos' y tratar de acceder a este genera 'KeyError'. La solucion es simplemente
                          # añadirlo como una nueva llave y crear el otro diccionario en el valor.
             grafo[datos['destination'][i]]={datos["origin"][i]:(datos["length"][i],datos["harassmentRisk"][i])}
+
+def obtenerMenor(dist,visitados):
+	llave = ''
+	menor = 400000
+	for key in dist:
+		if key not in visitados:
+			if dist[key] <= menor:
+				menor = dist[key]
+				llave = key
+	return llave			
+
+
+def dijkstra(start,target,graph):
+	dist = dict()
+	unvisited = deque()
+	visitados = set()
+	for key in graph:
+		dist[key] = 1e7
+		unvisited.appendleft(key)
+	dist[start] = 0
+	while len(unvisited) != 0:
+		actual = obtenerMenor(dist,visitados)
+		unvisited.remove(actual)
+		visitados.add(actual)
+		for adyacente in graph[actual]:
+			if adyacente in unvisited:
+				alt = dist[actual] + graph[actual][adyacente][0]
+				if alt < dist[adyacente]:
+					dist[adyacente] = alt		
+	return dist[target]
+
+print(dijkstra('(-75.5464057, 6.21245)','(-75.5689193, 6.3039946)',grafo))
