@@ -97,4 +97,4 @@ def dijkstraAcoso(start,target,graph):
                     acoso[adyacente] = alt	
     printPath(parent,target)
     print()
-    print(acoso[target]/numNodes(parent,target))
+    print(acoso[target]/(numNodes(parent,target)-1))
