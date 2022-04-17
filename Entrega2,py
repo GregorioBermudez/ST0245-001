@@ -1,3 +1,4 @@
+import numpy as np
 from collections import deque
 import pandas as pd
 datos = pd.read_csv('calles_de_medellin_con_acoso.csv', sep = ';',)
@@ -10,7 +11,7 @@ origenes_unicos = datos.origin.unique()
 # Y los valores son diccionarios vacios.
 for i in range(len(origenes_unicos)):
     grafo[origenes_unicos[i]] = {}
-
+ 
 # Se completa el grafo. En el diccionario de cada valor,
 # las llaves son los destinos, y los valores son
 # la distancia y el porcentaje de acoso para ese destino
@@ -29,35 +30,66 @@ for i in datos.index:
                          # 'grafos' y tratar de acceder a este genera 'KeyError'. La solucion es simplemente
                          # añadirlo como una nueva llave y crear el otro diccionario en el valor.
             grafo[datos['destination'][i]]={datos["origin"][i]:(datos["length"][i],datos["harassmentRisk"][i])}
+ 
+def obtenerMenor(dist,unvisited):
+    menor = 400000
+    llave = ''
+    for vertice in unvisited:
+	    if dist[vertice] <= menor:
+             menor = dist[vertice]
+             llave = vertice
+	
+    return llave	
+def printPath(parent, j):
+	#Base Case : If j is source
+	if parent[j] == -1 :
+		print(j,end=" ")
+		return
+	printPath(parent , parent[j])
+	print (j,end="->")
+ 
+def dijkstraDist(start,target,graph):
+    dist = dict()
+    parent=dict()
+    unvisited = deque()
+    for key in graph:
+        parent[key]=-1
+        dist[key] = 1e7
+        unvisited.appendleft(key)
+    dist[start] = 0
+    while len(unvisited) != 0:
+        actual = obtenerMenor(dist,unvisited)
+        if actual == target: break
+        unvisited.remove(actual)
+        for adyacente in graph[actual]:
+            alt = dist[actual] + graph[actual][adyacente][0]
+            if alt < dist[adyacente]:
+                    parent[adyacente] = actual
+                    dist[adyacente] = alt		
+    printPath(parent,target)
+    print()
+    print(dist[target])
+ 
 
-def obtenerMenor(dist,visitados):
-	llave = ''
-	menor = 400000
-	for key in dist:
-		if key not in visitados:
-			if dist[key] <= menor:
-				menor = dist[key]
-				llave = key
-	return llave			
 
-
-def dijkstra(start,target,graph):
-	dist = dict()
-	unvisited = deque()
-	visitados = set()
-	for key in graph:
-		dist[key] = 1e7
-		unvisited.appendleft(key)
-	dist[start] = 0
-	while len(unvisited) != 0:
-		actual = obtenerMenor(dist,visitados)
-		unvisited.remove(actual)
-		visitados.add(actual)
-		for adyacente in graph[actual]:
-			if adyacente in unvisited:
-				alt = dist[actual] + graph[actual][adyacente][0]
-				if alt < dist[adyacente]:
-					dist[adyacente] = alt		
-	return dist[target]
-
-print(dijkstra('(-75.5464057, 6.21245)','(-75.5689193, 6.3039946)',grafo))
+def dijkstraAcoso(start,target,graph):
+    acoso = dict()
+    parent=dict()
+    unvisited = deque()
+    for key in graph:
+        parent[key]=-1
+        acoso[key] = 1e7
+        unvisited.appendleft(key)
+    acoso[start] = 0
+    while len(unvisited) != 0:
+        actual = obtenerMenor(acoso,unvisited)
+        if actual == target: break
+        unvisited.remove(actual)
+        for adyacente in graph[actual]:
+            alt = acoso[actual] + graph[actual][adyacente][1]
+            if alt < acoso[adyacente]:
+                    parent[adyacente] = actual
+                    acoso[adyacente] = alt	
+    printPath(parent,target)
+    print()
+    print(acoso[target])
