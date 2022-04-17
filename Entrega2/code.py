@@ -37,7 +37,6 @@ def obtenerMenor(dist,unvisited):
 	    if dist[vertice] <= menor:
              menor = dist[vertice]
              llave = vertice
-	
     return llave
 	
 def printPath(parent, j):
@@ -48,10 +47,10 @@ def printPath(parent, j):
 	printPath(parent , parent[j])
 	print (j,end="->")
 
-def numNodes(parent, j):
+def numEdges(parent, j):
 	if parent[j] == -1 :
-		return 1
-	else: return 1+numNodes(parent , parent[j])
+		return 0
+	else: return 1+numEdges(parent , parent[j])
  
 def dijkstraDist(start,target,graph):
     dist = dict()
@@ -97,4 +96,4 @@ def dijkstraAcoso(start,target,graph):
                     acoso[adyacente] = alt	
     printPath(parent,target)
     print()
-    print(acoso[target]/(numNodes(parent,target)-1))
+    print(acoso[target]/numEdges(parent,target))
