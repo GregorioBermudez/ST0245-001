@@ -1,4 +1,3 @@
-import numpy as np
 from collections import deque
 import pandas as pd
 datos = pd.read_csv('calles_de_medellin_con_acoso.csv', sep = ';',)
@@ -39,14 +38,20 @@ def obtenerMenor(dist,unvisited):
              menor = dist[vertice]
              llave = vertice
 	
-    return llave	
+    return llave
+	
 def printPath(parent, j):
 	#Base Case : If j is source
 	if parent[j] == -1 :
-		print(j,end=" ")
+		print(j,end="->")
 		return
 	printPath(parent , parent[j])
 	print (j,end="->")
+
+def numNodes(parent, j):
+	if parent[j] == -1 :
+		return 1
+	else: return 1+numNodes(parent , parent[j])
  
 def dijkstraDist(start,target,graph):
     dist = dict()
@@ -92,4 +97,4 @@ def dijkstraAcoso(start,target,graph):
                     acoso[adyacente] = alt	
     printPath(parent,target)
     print()
-    print(acoso[target])
+    print(acoso[target]/numNodes(parent,target))
