@@ -13,7 +13,6 @@ origenes_unicos = data.origin.unique()
 # Y los valores son diccionarios vacios.
 for i in range(len(origenes_unicos)):
     grafo[origenes_unicos[i]] = {}
- 
 # Se completa el grafo. En el diccionario de cada valor,
 # las llaves son los destinos, y los valores son
 # la distancia y el porcentaje de acoso para ese destino
@@ -36,16 +35,18 @@ for i in data.index:
 
 def main():
     print('Por favor, sea muy específico al ingresar los lugares...')
+    print("Recuerde que la ruta roja es la más rápida, la azul la más balanceada entre acoso y distancia, y la verde es la más segura.")
     origen = JsonApi.generar_coordenadas(input("Ingrese lugar de origen: "))
     origenGrafo = graphAlgorithms.encontrarOrigenCercano(origen,data)
     origenGrafo = str((origenGrafo[1],origenGrafo[0]))
     destino =JsonApi.generar_coordenadas(input("Ingrese lugar de destino: "))
     destinoGrafo = graphAlgorithms.encontrarDestinoCercano(destino,data)
     destinoGrafo = str((destinoGrafo[1],destinoGrafo[0]))
-    path, totalDistance = graphAlgorithms.shortest_path(origenGrafo,destinoGrafo,grafo)
-    mapRoute.graficarMapa(path)
+    path1, totalDistance = graphAlgorithms.safest_path(origenGrafo,destinoGrafo,grafo)
+    path2, totalDistance2 = graphAlgorithms.shortest_and_safest_path(origenGrafo,destinoGrafo,grafo)
+    path3, totalDistance3 = graphAlgorithms.shortest_path(origenGrafo,destinoGrafo,grafo)
+    
+    mapRoute.graficarMapa(path1,path2,path3)
 
 main()
-
-
 
