@@ -2,6 +2,7 @@ import pandas as pd
 import JsonApi
 import mapRoute
 import graphAlgorithms
+import webbrowser
 
 data = pd.read_csv('calles_de_medellin_con_acoso.csv', sep = ';',)
 data.harassmentRisk = data.harassmentRisk.fillna(data.harassmentRisk.mean())
@@ -47,6 +48,7 @@ def main():
     path3, totalDistance3 = graphAlgorithms.shortest_path(origenGrafo,destinoGrafo,grafo)
     
     mapRoute.graficarMapa(path1,path2,path3)
+    webbrowser.open_new_tab('map.html')
 
 main()
 
