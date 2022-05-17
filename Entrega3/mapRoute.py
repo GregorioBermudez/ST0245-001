@@ -1,6 +1,6 @@
 import gmplot
 import pandas as pd
-apikey = 'AIzaSyBFSjXTLiGgLYvA_-SrCaoUWfBAouEgEUo'
+apikey = '' #insertar API de google maps
 def crearLimitesPoligono():
     lngs = []
     lats = []
