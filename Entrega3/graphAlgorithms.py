@@ -39,19 +39,20 @@ def safest_path(origin, target, graph):
     parent={vertex: -1 for vertex in graph}
     pq = [(0, origin)]
     while len(pq) > 0:
-        current_distance, current_vertex = heapq.heappop(pq)
+        current_risk, current_vertex = heapq.heappop(pq)
         if current_vertex is target: break
-        if current_distance > risks[current_vertex]:
+        if current_risk > risks[current_vertex]:
             continue
         for neighbor, weight in graph[current_vertex].items():
-            risk = current_distance + weight[1]
+            risk = current_risk + weight[1]
             if risk < risks[neighbor]:
                 risks[neighbor] = risk
                 parent[neighbor] = current_vertex
                 heapq.heappush(pq, (risk, neighbor))
-    createPath(parent,target)
+    path = []
+    createPath(parent,target,path)
     print()
-    return risks[target]/numNodes(parent,target)
+    return path , risks[target]/numNodes(parent,target)
  
 def shortest_and_safest_path(origin, target, graph): #Teniendo en cuenta que la distancia y el acoso son igual de importantes
     weights = {vertex: float('infinity') for vertex in graph}
@@ -69,9 +70,10 @@ def shortest_and_safest_path(origin, target, graph): #Teniendo en cuenta que la 
                 weights[neighbor] = total
                 parent[neighbor] = current_vertex
                 heapq.heappush(pq, (total, neighbor))
-    createPath(parent,target,path = [])
+    path = []
+    createPath(parent,target,path)
     print()
-    return weights[target]
+    return path,weights[target]
 
 def distance(origin, destination):
     """
