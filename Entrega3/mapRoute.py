@@ -1,6 +1,6 @@
 import gmplot
 import pandas as pd
-apikey = 'AIzaSyBFSjXTLiGgLYvA_-SrCaoUWfBAouEgEUo'
+apikey = '' #insert Google Maps API key
 def createPolygon():
     lngs = []
     lats = []
