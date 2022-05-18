@@ -1,5 +1,6 @@
 import heapq
 import math
+
 def createPath(parent, j,path):
     if parent[j] == -1:
         path.append(j)
@@ -54,7 +55,7 @@ def safest_path(origin, target, graph):
     print()
     return path , risks[target]/numNodes(parent,target)
  
-def shortest_and_safest_path(origin, target, graph): #Teniendo en cuenta que la distancia y el acoso son igual de importantes
+def shortest_and_safest_path(origin, target, graph): #Returns the path, where the distance * harassment risk is the minimum
     weights = {vertex: float('infinity') for vertex in graph}
     weights[origin] = 0
     parent={vertex: -1 for vertex in graph}
@@ -93,24 +94,24 @@ def distance(origin, destination):
 
     return d
 
-def encontrarOrigenCercano(origen,data):
-    distancia = 1000000
-    mejor = ()
-    for coordenada in data['origin']:
-        long,lat = list(map(float,coordenada[1:-1].split(',')))
-        currDist = distance(origen,(lat,long))
-        if currDist < distancia:
-            distancia = currDist
-            mejor = (lat,long)
-    return mejor        
+def nearestOrigin(origin,data):
+    dist = 1000000
+    nearest = ()
+    for coord in data['origin']:
+        long,lat = list(map(float,coord[1:-1].split(',')))
+        currDist = distance(origin,(lat,long))
+        if currDist < dist:
+            dist = currDist
+            nearest = (lat,long)
+    return nearest  
 
-def encontrarDestinoCercano(destino,data):
-    distancia = 1000000
-    mejor = ()
-    for coordenada in data['destination']:
-        long,lat = list(map(float,coordenada[1:-1].split(',')))
-        currDist = distance(destino,(lat,long))
-        if currDist < distancia:
-            distancia = currDist
-            mejor = (lat,long)
-    return mejor     
+def nearestDestination(destination,data):
+    dist = 1000000
+    nearest = ()
+    for coord in data['destination']:
+        long,lat = list(map(float,coord[1:-1].split(',')))
+        currDist = distance(destination,(lat,long))
+        if currDist < dist:
+            dist = currDist
+            nearest = (lat,long)
+    return nearest     
