@@ -17,8 +17,8 @@ else :
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
-def generar_coordenadas(locacion):
-    address = locacion
+def strToCoordinates(place):
+    address = place
 
     parms = dict()
     parms['address'] = address
