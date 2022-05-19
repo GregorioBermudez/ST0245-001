@@ -38,10 +38,9 @@ def main():
     path1, totalDistance = graphAlgorithms.safest_path(origin,destination,graph)
     path2, totalDistance2 = graphAlgorithms.shortest_and_safest_path(origin,destination,graph)
     path3, totalDistance3 = graphAlgorithms.shortest_path(origin,destination,graph)
-    
+
     mapRoute.createMap(path1,path2,path3)
     webbrowser.open_new_tab('map.html')
 
 main()
-
 
