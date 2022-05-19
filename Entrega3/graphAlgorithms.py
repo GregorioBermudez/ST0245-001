@@ -1,6 +1,6 @@
 import heapq
 import math
-
+import collections
 def createPath(parent, j,path):
     if parent[j] == -1:
         path.append(j)
@@ -34,11 +34,12 @@ def shortest_path(origin, target, graph):
     print()
     return path,distances[target]
 
+
 def safest_path(origin, target, graph):
     risks = {vertex: float('infinity') for vertex in graph}
     risks[origin] = 0
     parent={vertex: -1 for vertex in graph}
-    pq = [(0, origin)]
+    pq = [(0, origin )]
     while len(pq) > 0:
         current_risk, current_vertex = heapq.heappop(pq)
         if current_vertex is target: break
@@ -75,6 +76,58 @@ def shortest_and_safest_path(origin, target, graph): #Returns the path, where th
     createPath(parent,target,path)
     print()
     return path,weights[target]
+
+def no_exceed_risk(origin,target,graph,max_risk):
+    distances = {v: float('infinity') for v in graph}
+    parent={vertex: -1 for vertex in graph}
+    risks = {v: float('infinity') for v in graph}
+    distances[origin] = 0
+    risks[origin] = 0
+    pq = [(0, 0, origin)]
+    while len(pq) > 0:
+        current_distance, current_risk, current_vertex= heapq.heappop(pq)
+        if current_vertex is target:
+            break
+        for neighbor, weight in graph[current_vertex].items():
+            distance = current_distance + weight[0]   
+            if distance < distances[neighbor]:
+                riskk = current_risk + (weight[0]*weight[1])
+                average_risk = riskk/distance 
+                if average_risk <= max_risk: 
+                    parent[neighbor] = current_vertex
+                    distances[neighbor]= distance
+                    risks[neighbor] = average_risk
+                    heapq.heappush(pq, (distance, riskk, neighbor))
+    path = []
+    createPath(parent,target,path)
+    print()                
+    return path,distances[target]
+
+def no_exceed_distance(origin,target,graph,max_distance):
+    distances = {v: float('infinity') for v in graph}
+    parent={vertex: -1 for vertex in graph}
+    risks = {v: float('infinity') for v in graph}
+    distances[origin] = 0
+    risks[origin] = 0
+    pq = [(0, 0, origin)]
+    while len(pq) > 0:
+        current_risk, current_distance, current_vertex= heapq.heappop(pq)
+        if current_vertex is target:
+            break
+        for neighbor, weight in graph[current_vertex].items():
+            distance = current_distance + weight[0]   
+            if distance < distances[neighbor] and distance < max_distance:
+                riskk = current_risk + (weight[0]*weight[1])
+                average_risk = riskk/distance 
+                if average_risk <= risks[neighbor]: 
+                    parent[neighbor] = current_vertex
+                    distances[neighbor]= distance
+                    risks[neighbor] = average_risk
+                    heapq.heappush(pq, (riskk, distance, neighbor))
+    path = []
+    createPath(parent,target,path)
+    print()                
+    return path,risks[target],distances[target]
 
 def distance(origin, destination):
     """
