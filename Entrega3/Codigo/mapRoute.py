@@ -1,7 +1,7 @@
 import gmplot
 import pandas as pd
 import webbrowser
-apikey = 'AIzaSyBFSjXTLiGgLYvA_-SrCaoUWfBAouEgEUo'
+apikey = ''#insert API KEY
 def createPolygon():
     lngs = []
     lats = []
