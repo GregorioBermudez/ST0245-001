@@ -1,6 +1,6 @@
 import gmplot
 import pandas as pd
-apikey = '' #insert Google Maps API key
+apikey = ''#inser your Google Mpas API
 def createPolygon():
     lngs = []
     lats = []
@@ -30,11 +30,11 @@ def createMap(path1,path2,path3):
     apikey=apikey,)
     gmapone.polygon(latLimit,longLimit,face_color='white',
                     face_alpha = 0.4, edge_color='black', edge_width=10)
-    gmapone.scatter(lat,long,'blue',size = 3,marker = False)
-    gmapone.plot(lat,long,'blue',edge_width = 4)
     gmapone.scatter(lat,long,'green',size = 3,marker = False)
-    gmapone.plot(lat2,long2,'green',edge_width = 5)
-    gmapone.scatter(lat,long,'red',size = 3,marker = False)
+    gmapone.plot(lat,long,'green',edge_width = 4)
+    gmapone.scatter(lat2,long2,'blue',size = 3,marker = False)
+    gmapone.plot(lat2,long2,'blue',edge_width = 5)
+    gmapone.scatter(lat3,long3,'red',size = 3,marker = False)
     gmapone.plot(lat3,long3,'red',edge_width = 6)
     gmapone.marker(lat[0],long[0],label = 'A',title='Punto Inicio')
     gmapone.marker(lat[-1],long[-1],label = 'B')
